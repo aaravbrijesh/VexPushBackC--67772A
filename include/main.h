@@ -75,6 +75,46 @@ void opcontrol(void);
  * You can add C++-only headers here
  */
 //#include <iostream>
-#endif
+
+// --- CRITICAL FIX: INCLUDE CUSTOM HEADERS HERE ---
+// These declarations are needed before they are used in extern statements.
+#include "robot.hpp"     // Defines constants and the Robot namespace (used in src/robot.cpp)
+#include "drive.hpp"     // Defines the MecanumDrive class
+#include "intake.hpp"    // Defines the Intake class
+#include "outtake.hpp"   // Defines the Outtake class
+#include "bar.hpp"       // Defines the Bar class
+#include "treads.hpp"    // Defines the Treads class
+// ---------------------------------------------------
+
+
+// --- REQUIRED GLOBAL C++ FUNCTION PROTOTYPES ---
+// These allow opcontrol.cpp to call functions defined in other source files.
+void drive_control();
+void intake_control();
+void outtake_control();
+void treads_control();
+void intake_system_control();
+void bar_control(); 
+void treads_control();
+// ---------------------------------------------------
+
+#endif // __cplusplus
+
+// --- REQUIRED GLOBAL C++ VARIABLE DECLARATIONS ---
+// These 'extern' statements tell the compiler that these objects are defined 
+// in exactly one other place (src/robot.cpp).
+
+// PROS API Global Objects
+extern pros::Controller controller;
+extern pros::MotorGroup left_motors; 
+extern pros::MotorGroup right_motors;
+
+// Custom Subsystem Global Objects (FIX: Removed Robot:: prefix to resolve error)
+extern MecanumDrive chassis;
+extern Intake my_intake;
+extern Outtake my_outtake;
+extern Bar my_bar;
+extern Treads my_treads;
+// ---------------------------------------------------
 
 #endif  // _PROS_MAIN_H_
