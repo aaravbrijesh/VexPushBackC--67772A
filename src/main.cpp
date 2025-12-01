@@ -28,7 +28,7 @@ void competition_initialize() {}
 // PROS 4 automatically finds this function. 
 // We call the specific routine from our auton namespace.
 void autonomous() {
-  Auton::Auton();
+  Auton::myAuton();
 }
 
 // Note: opcontrol() is likely defined in src/opcontrol.cpp. 

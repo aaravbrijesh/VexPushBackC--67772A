@@ -127,7 +127,7 @@ void turnRight(double degrees, double kP, double kI, double kD) {
   chassis.stop();
 }
 
-void Auton() {
+void myAuton() {
   // a small example autonomous routine
   pros::lcd::clear();
   pros::lcd::print(0, "Running Auton");
