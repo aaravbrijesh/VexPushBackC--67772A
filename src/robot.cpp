@@ -2,8 +2,8 @@
 
 // Include the general PROS header and your subsystem headers
 #include "main.h" 
-#include "robot.hpp" // Keep this if it contains declarations for the Robot namespace
-#include "drive.hpp" // Necessary for MecanumDrive class definition
+#include "robot.hpp" // Includes the Robot namespace definition.
+#include "drive.hpp" 
 #include "intake.hpp"
 #include "outtake.hpp"
 #include "bar.hpp"
@@ -12,18 +12,17 @@
 
 // ----------------------------------------------------------------------
 // 1. HARDWARE DEFINITIONS (Global Motors & Controller)
-// These PROS Motor objects and the Controller are defined outside the 
-// namespace, matching the extern declarations in main.h.
+// Global hardware definitions for PROS Motor objects and the Controller.
 // ----------------------------------------------------------------------
 
-// Controller Definition (MUST be global)
-pros::Controller controller(CONTROLLER_MASTER); // Renamed 'master' to 'controller' for consistency
+// Controller object definition.
+pros::Controller controller(CONTROLLER_MASTER); 
 
 // Left Drive
 pros::Motor front_left(PORT_FL, pros::MotorGears::green);
 pros::Motor back_left(PORT_BL, pros::MotorGears::green);
 
-// Right Drive (Negative port for reversing)
+// Right Drive (Port set to negative for physical direction reversal)
 pros::Motor front_right(-PORT_FR, pros::MotorGears::green);
 pros::Motor back_right(-PORT_BR, pros::MotorGears::green);
 
@@ -56,19 +55,12 @@ namespace Robot {
 // ----------------------------------------------------------------------
 
 void init() {
-  // Reset encoders using the global object
+  // Reset drive encoders using the global object.
   chassis.resetEncoders();
   
-  // FIX: Replaced my_bar.resetEncoders() with the correct PROS function 
-  // on the motor object itself.
+  // Sets the bar motor's current position to zero degrees.
   bar_motor.tare_position(); 
   
-  // Note: Your original code had 'bar_motor.tare_position();' at the end of the init() 
-  // function in an earlier version, so we restore the correct method here.
 }
-
-// You can delete the shutdown() function as PROS handles cleanup of globally defined objects. 
-
-// The rest of your Robot namespace functions go here...
 
 } // namespace Robot

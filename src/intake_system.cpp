@@ -1,66 +1,60 @@
 #include "main.h" 
-// main.h provides extern declarations for:
-// pros::Controller controller;
-// Intake my_intake;
-// Treads my_treads;
-// Outtake my_outtake;
+// Includes global object declarations (controller, my_intake, my_treads, my_outtake).
 
 void intake_system_control() {
     int power = 100; // Standard power for subsystems
 
-    // --- JAM DETECTION GUARDS (CRITICAL) ---
-    // If any motor is currently running a reverse-spin recovery move (returns false), 
-    // the 'return' skips all driver commands for this 20ms cycle, allowing the jam 
-    // to clear without interference.
+    // --- JAM DETECTION GUARDS ---
+    // Prevents driver control if any subsystem motor is currently executing an automated jam recovery move.
     if (!my_intake.check_motor_status(power)) return;
     if (!my_treads.check_motor_status(power)) return;
     if (!my_outtake.check_motor_status(power)) return;
 
-    // --- Intake and Indexing Logic (e.g., R1 Button) ---
+    // --- Intake and Indexing Logic (R1 Button) ---
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-        // R1 is pressed: Bring balls IN
+        // R1 is pressed: Commands the system to pull game objects into the robot.
         
-        // 1. Intake: Pulls balls into the robot
+        // 1. Intake: Pulls objects in.
         my_intake.spinIn(power);
         
-        // 2. Treads: Indexes balls up toward the output
+        // 2. Treads: Treads move forward to index objects toward the outtake.
         my_treads.spinForward(power); 
         
-        // 3. Outtake: Must be stopped or held to prevent premature firing
+        // 3. Outtake: Stops the outtake to stage the game objects.
         my_outtake.stop();
     }
     
-    // --- Shooting Logic (e.g., R2 Button) ---
+    // --- Shooting Logic (R2 Button) ---
     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-        // R2 is pressed: Shoot balls OUT TOP GOAL
+        // R2 is pressed: Commands the system to launch game objects.
         
-        // 1. Intake: Stop the intake, or gently reverse to clear the opening
+        // 1. Intake: Stops the intake to prevent interference.
         my_intake.stop();
         
-        // 2. Treads: Pushes balls out of the robot
+        // 2. Treads: Treads spin in reverse to feed objects into the outtake.
         my_treads.spinReverse(power); 
         
-        // 3. Outtake: Spins out to shoot
+        // 3. Outtake: Outtake spins out to launch the game objects.
         my_outtake.spinOut(power);
     } 
 
-    // --- Secondary Intake/Outtake Logic (e.g., L1 Button) ---
+    // --- Secondary Control Logic (L1 Button) ---
     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-        // L1 is pressed: Example logic (Intake out, Treads forward, Outtake stop)
+        // L1 is pressed: Commands a gentle outward movement.
         
-        // 1. Intake: Ejects object gently
+        // 1. Intake: Spins out to eject objects.
         my_intake.spinOut();
         
-        // 2. Treads: Pushes balls out of the robot
+        // 2. Treads: Treads move forward.
         my_treads.spinForward(power); 
         
-        // 3. Outtake: Must be stopped
+        // 3. Outtake: Outtake stops.
         my_outtake.stop();
     } 
 
-    // --- Neutral/Stop Logic (No Buttons Pressed) ---
+    // --- Neutral/Stop Logic (No Related Buttons Pressed) ---
     else {
-        // No related button is pressed: Stop all subsystems
+        // No related button is pressed: All subsystems stop.
         my_intake.stop();
         my_treads.stop();
         my_outtake.stop();

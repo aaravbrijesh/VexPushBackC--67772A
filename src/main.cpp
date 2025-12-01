@@ -2,7 +2,7 @@
 #include "robot.hpp"
 #include "auton.hpp" 
 
-// callback from sample
+// Callback function for the center button press on the V5 screen.
 void on_center_button() {
   static bool pressed = false;
   pressed = !pressed;
@@ -25,11 +25,10 @@ void disabled() {}
 
 void competition_initialize() {}
 
-// PROS 4 automatically finds this function. 
-// We call the specific routine from our auton namespace.
+// Called by the PROS kernel at the start of the autonomous period.
 void autonomous() {
+  // Executes the selected autonomous routine.
   Auton::myAuton();
 }
 
-// Note: opcontrol() is likely defined in src/opcontrol.cpp. 
-// PROS will find it there automatically.
+// The operator control function is defined in 'src/opcontrol.cpp'.

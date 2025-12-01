@@ -9,7 +9,7 @@ public:
   void updatePID();
   void holdPosition();
   void stop();
-  double getPosition() const;   // ✅ ADD THIS
+  double getPosition() const;   
 private:
   pros::Motor& motor_;
   PID pid_;

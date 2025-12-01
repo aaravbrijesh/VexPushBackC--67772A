@@ -12,5 +12,5 @@ namespace Auton {
   void turnRight(double degrees, double kP = 0.35, double kI = 0.0, double kD = 0.25);
 
   // a simple example autonomous routine that calls helpers
-  void simpleAuton();
+  void myAuton();
 }

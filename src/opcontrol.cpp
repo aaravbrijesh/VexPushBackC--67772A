@@ -1,19 +1,18 @@
 #include "main.h"
 
 void opcontrol() {
-    // The code MUST have a while(true) loop to keep running
+    // The main loop for operator control, runs continuously.
     while (true) {
         
-        // --- CALL YOUR SUBSYSTEM FUNCTIONS HERE ---
-        // Based on your file list, you likely have functions in these files.
-        // You must call them inside this loop.
+        // --- SUBSYSTEM CONTROL CALLS ---
         
-        drive_control();   // Call the function from drive.cpp
-        intake_system_control(); // Call the function from intake.cpp
-        bar_control();     // Call the function from bar.cpp
+        drive_control();   // Updates the drive train based on controller input.
+        intake_system_control(); // Updates the intake/indexing system.
+        bar_control();     // Updates the bar subsystem (includes PID control).
+        jam_control();   // Monitors and recovers from jams in various subsystems.
         
-        // --- REQUIRED DELAY ---
-        // You must have a delay to let the brain process other background tasks
+        // --- LOOP DELAY ---
+        // Required delay to prevent hogging system resources and allow background tasks.
         pros::delay(20); 
     }
 }

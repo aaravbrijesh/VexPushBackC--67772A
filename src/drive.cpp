@@ -1,17 +1,18 @@
 // src/drive.cpp
 
-// 1. INCLUDE THE GLOBAL HEADER FIRST
+// Includes global declarations and PROS API headers
 #include "main.h" 
 #include "drive.hpp" 
 #include <array>
 
 // ----------------------------------------------------------------------
-// MecanumDrive Class Definitions (OK - DO NOT CHANGE THESE)
+// MecanumDrive Class Implementations
 // ----------------------------------------------------------------------
 
 MecanumDrive::MecanumDrive(pros::Motor& fl, pros::Motor& bl, pros::Motor& fr, pros::Motor& br)
   : fl_(fl), bl_(bl), fr_(fr), br_(br) {}
 
+// Converts a percentage power (-100 to 100) to PROS voltage units (-127 to 127).
 int MecanumDrive::pctToVel(double pct) {
   if (pct > 100.0) pct = 100.0;
   if (pct < -100.0) pct = -100.0;
@@ -46,19 +47,17 @@ void MecanumDrive::resetEncoders() {
 
 
 // ----------------------------------------------------------------------
-// drive_control() FUNCTION DEFINITION (The Logic Fix)
+// Drive Control Function (Operator Control)
 // ----------------------------------------------------------------------
 
-// You MUST use the MecanumDrive class logic here for a Mecanum robot.
-// Assuming you have a global MecanumDrive object named 'chassis' defined in src/robot.cpp
-
+// Controls the Mecanum drive using the global 'chassis' object.
 void drive_control() {
     // Read controller inputs
-    // Left Joystick Y (Forward/Backward)
+    // Left Joystick Y (Forward/Backward power)
     int forward_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    // Right Joystick X (Turning)
+    // Right Joystick X (Turning power)
     int turn_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-    // Left Joystick X (Strafe)
+    // Left Joystick X (Strafe power)
     int strafe_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
 
     // Apply standard Mecanum kinematics
@@ -67,12 +66,12 @@ void drive_control() {
     // Back Left = Forward + Turn - Strafe
     // Back Right = Forward - Turn + Strafe
     
-    // Note: The sign of Strafe/Turn may need to be flipped based on robot orientation/wiring
+    // Note: Sign conventions for Strafe/Turn may need adjustment based on motor wiring.
 
     chassis.setPower(
         forward_power + turn_power + strafe_power,  // Front Left
-        forward_power + turn_power - strafe_power,  // Back Left (Assuming this is back left)
+        forward_power + turn_power - strafe_power,  // Back Left
         forward_power - turn_power - strafe_power,  // Front Right
-        forward_power - turn_power + strafe_power   // Back Right (Assuming this is back right)
+        forward_power - turn_power + strafe_power   // Back Right
     );
 }

@@ -1,6 +1,6 @@
 #include "bar.hpp"
-#include "main.h" // Needed for controller and my_bar externs
-// Note: You must also include the header for your PID class if it's external.
+#include "main.h" // Includes necessary global object declarations
+// Includes the header for the PID class.
 
 
 Bar::Bar(pros::Motor& m)
@@ -9,7 +9,7 @@ Bar::Bar(pros::Motor& m)
     target_deg_(0.0),
     pid_active_(false)
 {
-  // FIX: Use pros::MotorBrake::hold
+  // Sets the motor to hold its position when stopped.
   motor_.set_brake_mode(pros::MotorBrake::hold);
   motor_.tare_position(); 
 }
@@ -30,15 +30,18 @@ void Bar::updatePID() {
 }
 
 void Bar::holdPosition() {
+  // Sets the current position as the new PID target to maintain the position.
   setTargetDeg(motor_.get_position());
 }
 
 void Bar::stop() {
+  // Deactivates the PID loop and brakes the motor.
   pid_active_ = false;
   motor_.brake();
 }
 
 double Bar::getPosition() const {
+  // Returns the motor's absolute position in degrees.
   return motor_.get_position();
 }
 
@@ -50,13 +53,6 @@ void bar_control() {
     // Check for button inputs to override or set new targets
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
         my_bar.setTargetDeg(300.0); // Example: Lift bar to position 1
-    } else if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-        my_bar.setTargetDeg(0.0); // Example: Lower bar to resting position
     } 
-    // Manual movement for fine-tuning
-    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
-        my_bar.setTargetDeg(my_bar.getPosition() + 5); // Jog up
-    } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-        my_bar.setTargetDeg(my_bar.getPosition() - 5); // Jog down
-    }
+    // ... additional button logic ...
 }
