@@ -131,11 +131,8 @@ void myAuton() {
   // a small example autonomous routine
   pros::lcd::clear();
   pros::lcd::print(0, "Running Auton");
-  driveForward(24.0);
-  pros::delay(200);
-  turnRight(90.0);
-  pros::delay(200);
-  driveBackward(12.0);
+  driveForward(12.0);
+  
 }
 
 } // namespace Auton

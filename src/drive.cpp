@@ -1,21 +1,22 @@
 // src/drive.cpp
 
-// Includes global declarations and PROS API headers
+// 1. INCLUDE THE GLOBAL HEADER FIRST
 #include "main.h" 
 #include "drive.hpp" 
 #include <array>
+#include <cmath> // Include cmath for std::abs() used in deadband
 
 // ----------------------------------------------------------------------
-// MecanumDrive Class Implementations
+// MecanumDrive Class Definitions (Keep unchanged)
 // ----------------------------------------------------------------------
 
 MecanumDrive::MecanumDrive(pros::Motor& fl, pros::Motor& bl, pros::Motor& fr, pros::Motor& br)
   : fl_(fl), bl_(bl), fr_(fr), br_(br) {}
 
-// Converts a percentage power (-100 to 100) to PROS voltage units (-127 to 127).
 int MecanumDrive::pctToVel(double pct) {
   if (pct > 100.0) pct = 100.0;
   if (pct < -100.0) pct = -100.0;
+  // Converts percentage power (-100 to 100) to PROS voltage (-127 to 127)
   return static_cast<int>(pct * 127.0 / 100.0);
 }
 
@@ -47,31 +48,32 @@ void MecanumDrive::resetEncoders() {
 
 
 // ----------------------------------------------------------------------
-// Drive Control Function (Operator Control)
+// drive_control() FUNCTION DEFINITION (Tank Drive Logic)
 // ----------------------------------------------------------------------
 
-// Controls the Mecanum drive using the global 'chassis' object.
 void drive_control() {
-    // Read controller inputs
-    // Left Joystick Y (Forward/Backward power)
-    int forward_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    // Right Joystick X (Turning power)
-    int turn_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-    // Left Joystick X (Strafe power)
-    int strafe_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_X);
-
-    // Apply standard Mecanum kinematics
-    // Front Left = Forward + Turn + Strafe
-    // Front Right = Forward - Turn - Strafe
-    // Back Left = Forward + Turn - Strafe
-    // Back Right = Forward - Turn + Strafe
+    // 1. Read controller inputs for TANK DRIVE:
+    // Left Joystick Y (Forward/Backward for Left Side)
+    int left_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    // Right Joystick Y (Forward/Backward for Right Side)
+    int right_power = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
     
-    // Note: Sign conventions for Strafe/Turn may need adjustment based on motor wiring.
+    // 2. Deadband (to prevent motor drift)
+    const int deadband = 5;
+    if (std::abs(left_power) < deadband) {
+        left_power = 0;
+    }
+    if (std::abs(right_power) < deadband) {
+        right_power = 0;
+    }
 
+    // 3. Apply TANK DRIVE kinematics to the MecanumDrive class.
+    // MecanumDrive setPower(fl_pct, bl_pct, fr_pct, br_pct)
+    // Note: Mecanum wheels will not strafe in this mode, but will still drive and turn.
     chassis.setPower(
-        forward_power + turn_power + strafe_power,  // Front Left
-        forward_power + turn_power - strafe_power,  // Back Left
-        forward_power - turn_power - strafe_power,  // Front Right
-        forward_power - turn_power + strafe_power   // Back Right
+        left_power,   // Front Left
+        left_power,   // Back Left
+        right_power,  // Front Right
+        right_power   // Back Right
     );
 }

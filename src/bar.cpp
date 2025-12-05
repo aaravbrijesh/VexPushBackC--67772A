@@ -54,5 +54,7 @@ void bar_control() {
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
         my_bar.setTargetDeg(300.0); // Example: Lift bar to position 1
     } 
-    // ... additional button logic ...
+    else if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+        my_bar.setTargetDeg(0.0); // Example: Lower bar to position 0
+    }
 }
