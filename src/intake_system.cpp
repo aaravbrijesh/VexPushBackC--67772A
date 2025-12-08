@@ -18,10 +18,10 @@ void intake_system_control() {
         my_intake.spinIn(power);
         
         // 2. Treads: Treads move forward to index objects toward the outtake.
-        my_treads.spinForward(power); 
+        my_treads.spinReverse(power); 
         
         // 3. Outtake: Stops the outtake to stage the game objects.
-        my_outtake.stop();
+        my_outtake.spinIn();
     }
     
     // --- Shooting Logic (R2 Button) ---
@@ -29,10 +29,10 @@ void intake_system_control() {
         // R2 is pressed: Commands the system to launch game objects.
         
         // 1. Intake: Stops the intake to prevent interference.
-        my_intake.stop();
+        my_intake.spinOut();
         
         // 2. Treads: Treads spin in reverse to feed objects into the outtake.
-        my_treads.spinReverse(power); 
+        my_treads.spinForward(power); 
         
         // 3. Outtake: Outtake spins out to launch the game objects.
         my_outtake.spinOut(power);
