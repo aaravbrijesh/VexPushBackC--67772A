@@ -43,7 +43,7 @@ void intake_system_control() {
         // L1 is pressed: Commands a gentle outward movement.
         
         // 1. Intake: Spins out to eject objects.
-        my_intake.spinOut();
+        my_intake.spinIn();
         
         // 2. Treads: Treads move forward.
         my_treads.spinForward(power); 

@@ -101,9 +101,18 @@ void turnRight(double degrees, double kP, double kI, double kD) {
 
 void myAuton() {
   // Example usage (assuming this is your current auton)
-  driveForward(24.0);
+  mybar.setTargetDeg(0.00); // Start with bar down
+  driveForward(12.0);
+  turnRight(90.0);
+  driveForward(18.0);
   turnRight(90.0);
   driveForward(12.0);
+  myIntake.spinIn();
+  driveBackward(12.0);
+  myOuttake.spinIn();
+  driveForward(6.0);
+  turnRight(135.0);
+  driveForward(24.0);
 }
 
 } // namespace Auton
