@@ -11,6 +11,7 @@ public:
   
   // Checks the motor's RPM to detect a jam. Returns false if a recovery move is running.
   bool check_motor_status(int commanded_power); 
+
 private:
   pros::Motor& motor_;
   

@@ -12,11 +12,12 @@ void Bar::setTargetDeg(double deg) {
 
 void Bar::moveManual(int voltage) {
     is_moving_to_preset = false; 
-    motor_.move(voltage);
+    motor_.move_voltage(voltage);
 }
 
 void Bar::stop() {
     is_moving_to_preset = false;
+    motor_.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     motor_.brake();
 }
 
@@ -27,21 +28,16 @@ double Bar::getPosition() const {
 void bar_control() {
     // 1. Manual Triggers (Override)
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        my_bar.moveManual(100);
+        my_bar.moveManual(6000);
+        
     } 
     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-        my_bar.moveManual(-100);
+        my_bar.moveManual(-6000);
     } 
     
     // 3. Logic to handle "Coasting" to the target
     else {
         // If we aren't currently trying to hit a preset, stop/hold the motor
-        if (!is_moving_to_preset) {
-            my_bar.stop();
-        } 
-        // If we are hitting a preset, check if the motor speed has dropped to ~0
-        else if (std::abs(bar_motor.get_actual_velocity()) < 2) {
-            is_moving_to_preset = false; 
-        }
+        my_bar.stop();
     }
 }

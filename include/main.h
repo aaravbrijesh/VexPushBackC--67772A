@@ -83,7 +83,7 @@ void opcontrol(void);
 #include "intake.hpp"    // Defines the Intake class
 #include "outtake.hpp"   // Defines the Outtake class
 #include "bar.hpp"       // Defines the Bar class
-#include "treads.hpp"    // Defines the Treads class
+
 // ---------------------------------------------------
 
 
@@ -92,10 +92,8 @@ void opcontrol(void);
 void drive_control();
 void intake_control();
 void outtake_control();
-void treads_control();
 void intake_system_control();
 void bar_control(); 
-void treads_control();
 // ---------------------------------------------------
 
 #endif // __cplusplus
@@ -112,9 +110,9 @@ extern pros::MotorGroup right_motors;
 // Custom Subsystem Global Objects (FIX: Removed Robot:: prefix to resolve error)
 extern MecanumDrive chassis;
 extern Intake my_intake;
-extern Outtake my_outtake;
+extern Outtake long_outtake;
+extern Outtake upper_outtake;
 extern Bar my_bar;
-extern Treads my_treads;
 // ---------------------------------------------------
 
 #endif  // _PROS_MAIN_H_

@@ -7,8 +7,6 @@
 #include "intake.hpp"
 #include "outtake.hpp"
 #include "bar.hpp"
-#include "treads.hpp"
-
 
 // ----------------------------------------------------------------------
 // 1. HARDWARE DEFINITIONS (Global Motors & Controller)
@@ -28,10 +26,9 @@ pros::Motor back_right(-PORT_BR, pros::MotorGears::green);
 
 // Subsystems
 pros::Motor intake_motor(PORT_INTAKE, pros::MotorGears::green);
-pros::Motor outtake_motor(PORT_OUTTAKE, pros::MotorGears::green);
+pros::Motor long_outtake_motor(PORT_LONG_OUTTAKE, pros::MotorGears::green);
+pros::Motor upper_outtake_motor(PORT_UPPER_OUTTAKE, pros::MotorGears::green);
 pros::Motor bar_motor(PORT_BAR, pros::MotorGears::green);
-pros::Motor treads_motor(PORT_TREADS, pros::MotorGears::green);
-
 
 // ----------------------------------------------------------------------
 // 2. SUBSYSTEM INSTANCES (Global Custom Class Objects)
@@ -43,10 +40,9 @@ MecanumDrive chassis(front_left, back_left, front_right, back_right);
 
 // The other subsystem objects
 Intake my_intake(intake_motor);
-Outtake my_outtake(outtake_motor);
+Outtake long_outtake(long_outtake_motor);
+Outtake upper_outtake(upper_outtake_motor);
 Bar my_bar(bar_motor);
-Treads my_treads(treads_motor);
-
 
 namespace Robot {
 
@@ -61,6 +57,8 @@ void init() {
   // Sets the bar motor's current position to zero degrees.
   bar_motor.tare_position(); 
   
+  // NOTE: Outtakes are already constructed as objects globally
+  // No need to use 'new' here
 }
 
 } // namespace Robot
