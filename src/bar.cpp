@@ -28,11 +28,11 @@ double Bar::getPosition() const {
 void bar_control() {
     // 1. Manual Triggers (Override)
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-        my_bar.moveManual(6000);
+        my_bar.moveManual(4000);
         
     } 
     else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-        my_bar.moveManual(-6000);
+        my_bar.moveManual(-4000);
     } 
     
     // 3. Logic to handle "Coasting" to the target

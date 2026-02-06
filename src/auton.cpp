@@ -68,9 +68,7 @@ namespace Auton {
   }
 
   void myAuton() {
-    // Example usage (assuming this is your current auton)
-    my_bar.setTargetDeg(0.00); // Start with bar down
-    driveForward(5.0);
+    driveForward(6.0);
   }
 } // namespace Auton
 

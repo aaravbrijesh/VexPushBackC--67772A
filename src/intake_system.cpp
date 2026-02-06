@@ -20,11 +20,8 @@ void intake_system_control() {
         // R2 is pressed: Commands the system to launch game objects.
         
         // 1. Intake: Spins out to score
-        my_intake.spinIn();
+        my_intake.spinOut();
         
-
-        
-
         long_outtake.spinOut(power);
         upper_outtake.spinOut(power);
     } 
